@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <title>Dynamic weather app</title>
+</head>
+<style>
+    body {
+        font-family: "montserrat";
+        background-color: burlywood;
+    }
+
+    .cityInput {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 3rem;
+    }
+
+    .cityInput input {
+        border-radius: 20px;
+        height: 2rem;
+        width: 15rem;
+    }
+
+    .card {
+        margin-inline: auto !important;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        transition: 0.3s;
+        width: 20rem;
+        margin-top: 10rem;
+        background-color: gray;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .container {
+        padding: 2px 16px;
+        text-align: center;
+        color: wheat;
+    }
+
+    #weatherCond {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 12rem;
+    }
+
+    #weatherCond i {
+        font-size: 3rem;
+        margin-top: 1rem;
+    }
+
+    .location i {
+        padding: 0.4rem;
+    }
+</style>
+
+<body>
+
+    <div class="card">
+
+        <div id="weatherCond">
+            <i class="fa-solid fa-sun" style="color: #ffcb00;"></i>
+
+        </div>
+        <div class="container">
+            <div class="info">
+                <h2 class="location">
+                    <i class="fa-solid fa-street-view"></i>{%temploc%},{%tempcont%}
+                </h2>
+                <p id="date"> TUE | Nov 29 | 6:30 PM</p>
+                <h1 class="temp">{%tempval%}&#176; C</h1>
+                <h3 class="tempMinMax">Min {%tempmin%}&#176;C | Max {%tempmax%}&#176;C</h3>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+
+
+        let curDate = document.getElementById("date");
+
+        let weatherCond = document.getElementById("weatherCond");
+        const tempStatus = "{%tempstat%}";
+        // const tempStatus = 'Rainy'
+        if (tempStatus == 'Sunny') {
+            weatherCond.innerHTML = "<i class='fa-solid fa-sun' style='color: #ffcb00;'></i>"
+
+        }
+        else if (tempStatus == "Clouds") {
+            weatherCond.innerHTML = "<i class='fa-solid fa-cloud' style='color:#55d6c2'></i>"
+
+        }
+        else if (tempStatus == "Rainy") {
+            weatherCond.innerHTML = `<i class="fa-solid fa-cloud-rain" style='color:#00adb9'></i>`
+
+        }
+        else if (tempStatus == "Smoke") {
+
+            weatherCond.innerHTML = `<i class="fa-solid fa-smog"></i>`
+        }
+        else {
+            weatherCond.innerHTML = "<i class='fa-solid fa-sun' style='color: #ffcb00;'></i>"
+
+        }
+        const getCurrentDay = () => {
+            const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+            const d = new Date();
+            let day = days[d.getDay()];
+            return day.toUpperCase();
+        };
+        getCurrentDay();
+        const getCurrentTime = () => {
+            const months = [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec",
+            ];
+
+            let current = new Date();
+
+            let month = months[current.getMonth()].toUpperCase();
+            let date = current.getDate();
+
+            let hours = current.getHours();
+
+            let mins = current.getMinutes();
+            mins = mins < 10 ? `0${mins}` : mins;
+            let period = "AM";
+            if (hours > 11) {
+                period = "PM";
+                hours = hours % 12;
+            } else if (hours > 12) {
+                hours = hours -= 12;
+            }
+
+
+            return `${month} ${date} | ${hours}:${mins} ${period}`;
+        };
+        getCurrentTime();
+        curDate.innerHTML = `${getCurrentDay()} | ${getCurrentTime()}`;
+    </script>
+</body>
+
+</html>
